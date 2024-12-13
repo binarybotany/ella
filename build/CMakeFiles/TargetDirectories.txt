@@ -1,5 +1,0 @@
-C:/repositories/ella/build/CMakeFiles/edit_cache.dir
-C:/repositories/ella/build/CMakeFiles/rebuild_cache.dir
-C:/repositories/ella/build/bin/CMakeFiles/ella.dir
-C:/repositories/ella/build/bin/CMakeFiles/edit_cache.dir
-C:/repositories/ella/build/bin/CMakeFiles/rebuild_cache.dir
