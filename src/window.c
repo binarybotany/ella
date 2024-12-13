@@ -38,6 +38,15 @@ window_t *window_create() {
   return window;
 }
 
+void window_loop(window_t *window, void (*update)(), void (*render)()) {
+  while (!glfwWindowShouldClose(window->glfw_window)) {
+    glfwPollEvents();
+    update();
+    render();
+    glfwSwapBuffers(window->glfw_window);
+  }
+}
+
 void window_destroy(void *window) {
   window_t *w = (window_t *)window;
   glfwDestroyWindow(w->glfw_window);
@@ -45,8 +54,4 @@ void window_destroy(void *window) {
 
   free(w->title);
   free(w);
-}
-
-GLFWwindow *window_get_glfw_window(window_t *window) {
-  return window->glfw_window;
 }
