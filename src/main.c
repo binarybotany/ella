@@ -5,7 +5,22 @@
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 
+#include "hash_table.h"
+
 int main(int argc, char **argv) {
+  hash_table_t *table = create_hash_table();
+
+  hash_table_insert(table, "name", "Vilkutas");
+  hash_table_insert(table, "age", "3");
+  hash_table_insert(table, "color", "Gray");
+
+  fprintf(stdout, "Name: %s\n", hash_table_search(table, "name"));
+  fprintf(stdout, "Color: %s\n", hash_table_search(table, "color"));
+
+  hash_table_remove(table, "age");
+
+  destroy_hash_table(table);
+
   if (!glfwInit()) {
     return 1;
   }
