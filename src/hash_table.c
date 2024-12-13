@@ -1,10 +1,11 @@
 #include "hash_table.h"
 
-/* TODO: Replace char *val with void *val                   */
+/* TODO: Add destructor to node */
 
 struct node_t {
   char *key;
   void *val;
+  void (*destructor)(void *);
   struct node_t *next;
 };
 
@@ -40,14 +41,15 @@ hash_table_t *ht_create(size_t size) {
   return table;
 }
 
-node_t *ht_create_node(const char *key, void *val) {
+node_t *ht_create_node(const char *key, void *val, void (*destructor)(void *)) {
   node_t *node = (node_t *)malloc(sizeof(node_t));
   if (node == NULL) {
     fprintf(stderr, "Unable to allocate memory\n");
     return NULL;
   }
   node->key = strdup(key);
-  node->val = strdup(val);
+  node->val = val;
+  node->destructor = destructor;
   node->next = NULL;
   return node;
 }
@@ -93,7 +95,8 @@ bool ht_resize(hash_table_t *table) {
   return true;
 }
 
-bool ht_insert(hash_table_t *table, const char *key, void *val) {
+bool ht_insert(hash_table_t *table, const char *key, void *val,
+               void (*destructor)(void *)) {
   if ((float)table->count / table->size > LOAD_FACTOR_THRESHOLD) {
     if (!ht_resize(table)) {
       return false;
@@ -101,7 +104,7 @@ bool ht_insert(hash_table_t *table, const char *key, void *val) {
   }
 
   size_t index = ht_hash(key, table->size);
-  node_t *new_node = ht_create_node(key, val);
+  node_t *new_node = ht_create_node(key, val, destructor);
   new_node->next = table->buckets[index];
   table->buckets[index] = new_node;
   table->count++;
@@ -121,6 +124,14 @@ void *ht_search(hash_table_t *table, const char *key) {
   return NULL;
 }
 
+void ht_delete_node(node_t *node) {
+  free(node->key);
+  if (node->destructor) {
+    node->destructor(node->val);
+  }
+  free(node);
+}
+
 void ht_delete(hash_table_t *table, const char *key) {
   size_t index = ht_hash(key, table->size);
   node_t *temp = table->buckets[index];
@@ -133,9 +144,7 @@ void ht_delete(hash_table_t *table, const char *key) {
       } else {
         table->buckets[index] = temp->next;
       }
-      free(temp->key);
-      free(temp->val);
-      free(temp);
+      ht_delete_node(temp);
       return;
     }
     prev = temp;
@@ -148,9 +157,7 @@ void ht_destroy(hash_table_t *table) {
     node_t *temp = table->buckets[i];
     while (temp) {
       node_t *next = temp->next;
-      free(temp->key);
-      free(temp->val);
-      free(temp);
+      ht_delete_node(temp);
       temp = next;
     }
   }

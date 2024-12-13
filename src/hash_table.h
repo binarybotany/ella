@@ -13,7 +13,8 @@ typedef struct node_t node_t;
 typedef struct hash_table_t hash_table_t;
 
 hash_table_t *ht_create(size_t size);
-bool ht_insert(hash_table_t *table, const char *key, void *val);
+bool ht_insert(hash_table_t *table, const char *key, void *val,
+               void (*destructor)(void *));
 void *ht_search(hash_table_t *table, const char *key);
 void ht_delete(hash_table_t *table, const char *key);
 void ht_destroy(hash_table_t *table);
