@@ -2,7 +2,7 @@
 
 struct engine_t {
   bool running;
-  hash_table_t *state;
+  hashtable_t *state;
 };
 
 engine_t *engine_create() {

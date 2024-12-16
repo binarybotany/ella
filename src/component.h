@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #include "entity.h"
-#include "hash_table.h"
+#include "hashtable.h"
 
 #define COMPONENT_TRANSFORM (1 << 0)
 
@@ -19,7 +19,7 @@ typedef struct {
 
 transform_entry_t *transforms;
 size_t ntransforms;
-hash_table_t *transform_map;
+hashtable_t *transform_map;
 
 void transform_add(entity_t entity, transform_t transform);
 
