@@ -19,11 +19,11 @@ typedef struct {
   char texture[256];
 } render_t;  // TODO rename
 
-transform_t *transforms;
-size_t n_transforms;
+extern transform_t *transforms;
+extern size_t n_transforms;
 
-render_t *renderers;
-size_t n_renderers;
+extern render_t *renderers;
+extern size_t n_renderers;
 
 void transform_add(entity_t entity, float x, float y, float z);
 void transform_remove(entity_t entity);

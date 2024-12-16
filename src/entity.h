@@ -5,9 +5,6 @@
 
 typedef uint32_t entity_t;
 
-entity_t entity_create() {
-  static entity_t next = 0;
-  return next++;
-}
+entity_t entity_create();
 
 #endif
