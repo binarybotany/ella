@@ -1,4 +1,4 @@
-#include "hash_table.h"
+#include "hashtable.h"
 
 /* TODO: Add destructor to node */
 
@@ -9,7 +9,7 @@ struct node_t {
   struct node_t *next;
 };
 
-struct hash_table_t {
+struct hashtable_t {
   size_t size, count;
   node_t **buckets;
 };
@@ -22,8 +22,8 @@ size_t ht_hash(const char *key, size_t size) {
   return hash % size;
 }
 
-hash_table_t *ht_create(size_t size) {
-  hash_table_t *table = (hash_table_t *)malloc(sizeof(hash_table_t));
+hashtable_t *ht_create(size_t size) {
+  hashtable_t *table = (hashtable_t *)malloc(sizeof(hashtable_t));
   if (table == NULL) {
     fprintf(stderr, "Unable to allocate memory\n");
     return NULL;
@@ -54,7 +54,7 @@ node_t *ht_create_node(const char *key, void *val, void (*destructor)(void *)) {
   return node;
 }
 
-void ht_rehash_all_elements(hash_table_t *table, node_t **new_buckets,
+void ht_rehash_all_elements(hashtable_t *table, node_t **new_buckets,
                             size_t new_size) {
   for (size_t i = 0; i < table->size; ++i) {
     node_t *node = table->buckets[i];
@@ -70,7 +70,7 @@ void ht_rehash_all_elements(hash_table_t *table, node_t **new_buckets,
   }
 }
 
-bool ht_resize(hash_table_t *table) {
+bool ht_resize(hashtable_t *table) {
   size_t new_size = table->size * 2;
   node_t **new_buckets = (node_t **)malloc(sizeof(node_t *) * new_size);
   if (new_buckets == NULL) {
@@ -95,7 +95,7 @@ bool ht_resize(hash_table_t *table) {
   return true;
 }
 
-bool ht_insert(hash_table_t *table, const char *key, void *val,
+bool ht_insert(hashtable_t *table, const char *key, void *val,
                void (*destructor)(void *)) {
   if ((float)table->count / table->size > LOAD_FACTOR_THRESHOLD) {
     if (!ht_resize(table)) {
@@ -112,7 +112,7 @@ bool ht_insert(hash_table_t *table, const char *key, void *val,
   return true;
 }
 
-void *ht_search(hash_table_t *table, const char *key) {
+void *ht_search(hashtable_t *table, const char *key) {
   size_t index = ht_hash(key, table->size);
   node_t *node = table->buckets[index];
   while (node) {
@@ -132,7 +132,7 @@ void ht_delete_node(node_t *node) {
   free(node);
 }
 
-void ht_delete(hash_table_t *table, const char *key) {
+void ht_delete(hashtable_t *table, const char *key) {
   size_t index = ht_hash(key, table->size);
   node_t *temp = table->buckets[index];
   node_t *prev = NULL;
@@ -152,7 +152,7 @@ void ht_delete(hash_table_t *table, const char *key) {
   }
 }
 
-void ht_destroy(hash_table_t *table) {
+void ht_destroy(hashtable_t *table) {
   for (size_t i = 0; i < table->size; ++i) {
     node_t *temp = table->buckets[i];
     while (temp) {

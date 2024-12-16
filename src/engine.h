@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "hash_table.h"
+#include "hashtable.h"
 #include "renderer.h"
 #include "window.h"
 

@@ -1,8 +1,7 @@
 #include "renderer.h"
 
 struct renderer_t {
-  component_t **components;
-  size_t component_count;
+  int placeholder;
 };
 
 renderer_t *renderer_create() {
@@ -26,5 +25,3 @@ void renderer_update(renderer_t *renderer) {
 void renderer_render(renderer_t *renderer) {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
-
-void renderer_system(renderer_t *renderer) {}

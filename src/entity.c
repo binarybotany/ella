@@ -1,3 +1,6 @@
 #include "entity.h"
 
-entity_metadata_t *entities = NULL;
+entity_t entity_create() {
+  static entity_t next = 0;
+  return next++;
+}
