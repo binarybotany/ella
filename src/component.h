@@ -7,7 +7,7 @@
 
 #include "entity.h"
 
-#define NO_COMPONENT -1
+#define NO_COMPONENT ((size_t)(-1))
 
 typedef struct {
   entity_t entity;
