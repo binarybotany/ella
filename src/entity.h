@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#define MAX_ENTITIES 1024
+
 typedef uint32_t entity_t;
 
 entity_t entity_create();
