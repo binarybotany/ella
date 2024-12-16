@@ -1,8 +1,7 @@
 #include "renderer.h"
 
 struct renderer_t {
-  component_t **components;
-  size_t component_count;
+  int placeholder;
 };
 
 renderer_t *renderer_create() {

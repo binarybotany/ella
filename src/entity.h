@@ -10,11 +10,4 @@ entity_t entity_create() {
   return next++;
 }
 
-typedef struct {
-  entity_t entity;
-  uint32_t component_mask;
-} entity_metadata_t;
-
-entity_metadata_t *entities;
-
 #endif
