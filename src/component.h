@@ -1,6 +1,7 @@
 #ifndef ELLA_COMPONENT_H_
 #define ELLA_COMPONENT_H_
 
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,6 +17,7 @@ typedef struct {
 
 extern transform_t *transforms;
 extern size_t n_transforms;
+extern size_t max_transforms;
 extern size_t entity_to_transforms[MAX_ENTITIES];
 
 void component_startup();

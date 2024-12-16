@@ -18,5 +18,7 @@ set(ella_sources
     "system.c" 
     "window.c")
 
+find_package(Threads REQUIRED)
+
 add_executable(ella main.c ${ella_headers} ${ella_sources})
-target_link_libraries(ella PRIVATE glad glfw)
+target_link_libraries(ella PRIVATE Threads::Threads glad glfw)
