@@ -7,14 +7,3 @@ void system_physics() {
     transform->y += 0.1f;
   }
 }
-
-void system_render() {
-  for (size_t i = 0; i < n_renderers; ++i) {
-    render_t *renderer = &renderers[i];
-    transform_t *transform = transform_get(renderer->entity);
-
-    if (transform) {
-      /* Do the thing */
-    }
-  }
-}

@@ -2,55 +2,44 @@
 
 transform_t *transforms = NULL;
 size_t n_transforms = 0;
+size_t entity_to_transforms[MAX_ENTITIES];
 
-render_t *renderers = NULL;
-size_t n_renderers = 0;
+void component_startup() {
+  for (size_t i = 0; i < MAX_ENTITIES; ++i) {
+    entity_to_transforms[i] = NO_COMPONENT;
+  }
+}
+
+void component_shutdown() { free(transforms); }
 
 void transform_add(entity_t entity, float x, float y, float z) {
+  if (entity_to_transforms[entity] != NO_COMPONENT) {
+    fprintf(stderr, "Entity %d already has a transform component\n", entity);
+    return;
+  }
+
   transforms = realloc(transforms, sizeof(transform_t) * (n_transforms + 1));
-  transforms[n_transforms++] = (transform_t){entity, x, y, z};
+  transforms[n_transforms] = (transform_t){entity, x, y, z};
+  entity_to_transforms[entity] = n_transforms;
+  n_transforms++;
 }
 
 void transform_remove(entity_t entity) {
-  for (size_t i = 0; i < n_transforms; ++i) {
-    if (transforms[i].entity == entity) {
-      transforms[i] = transforms[--n_transforms];
-      transforms = realloc(transforms, sizeof(transform_t) * n_transforms);
-      return;
-    }
+  size_t index = entity_to_transforms[entity];
+
+  if (index == NO_COMPONENT) {
+    fprintf(stderr, "Entity %d does not have a transform component\n", entity);
+    return;
   }
+
+  transforms[index] = transforms[--n_transforms];
+  entity_to_transforms[transforms[index].entity] = index;
+  entity_to_transforms[entity] = NO_COMPONENT;
+  transforms = realloc(transforms, sizeof(transform_t) * n_transforms);
 }
 
 transform_t *transform_get(entity_t entity) {
-  for (size_t i = 0; i < n_transforms; ++i) {
-    if (transforms[i].entity == entity) {
-      return &transforms[i];
-    }
-  }
-  return NULL;
-}
-
-void renderer_add(entity_t entity, const char *texture) {
-  renderers = realloc(renderers, sizeof(render_t) * (n_renderers + 1));
-  strcpy(renderers[n_renderers].texture, texture);
-  renderers[n_renderers++].entity = entity;
-}
-
-void renderer_remove(entity_t entity) {
-  for (size_t i = 0; i < n_renderers; ++i) {
-    if (renderers[i].entity == entity) {
-      renderers[i] = renderers[--n_renderers];
-      renderers = realloc(renderers, sizeof(render_t) * n_renderers);
-      return;
-    }
-  }
-}
-
-render_t *renderer_get(entity_t entity) {
-  for (size_t i = 0; i < n_renderers; ++i) {
-    if (renderers[i].entity == entity) {
-      return &renderers[i];
-    }
-  }
-  return NULL;
+  size_t index = entity_to_transforms[entity];
+  if (index == NO_COMPONENT) return NULL;
+  return &transforms[index];
 }

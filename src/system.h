@@ -4,6 +4,5 @@
 #include "component.h"
 
 void system_physics();
-void system_render();
 
 #endif
