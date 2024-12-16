@@ -114,12 +114,12 @@ bool ht_insert(hash_table_t *table, const char *key, void *val,
 
 void *ht_search(hash_table_t *table, const char *key) {
   size_t index = ht_hash(key, table->size);
-  node_t *temp = table->buckets[index];
-  while (temp) {
-    if (strcmp(temp->key, key) == 0) {
-      return temp->val;
+  node_t *node = table->buckets[index];
+  while (node) {
+    if (strcmp(node->key, key) == 0) {
+      return node->val;
     }
-    temp = temp->next;
+    node = node->next;
   }
   return NULL;
 }

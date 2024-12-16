@@ -12,8 +12,8 @@
 typedef struct window_t window_t;
 
 window_t *window_create();
-void window_loop(window_t *window, void (*update)(), void (*render)());
+void window_loop(window_t *window, void (*update)(), void (*render)(),
+                 void *context);
 void window_destroy(void *window);
-GLFWwindow *window_get_glfw_window(window_t *window);
 
 #endif

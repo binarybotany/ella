@@ -38,11 +38,12 @@ window_t *window_create() {
   return window;
 }
 
-void window_loop(window_t *window, void (*update)(), void (*render)()) {
+void window_loop(window_t *window, void (*update)(), void (*render)(),
+                 void *context) {
   while (!glfwWindowShouldClose(window->glfw_window)) {
     glfwPollEvents();
-    update();
-    render();
+    update(context);
+    render(context);
     glfwSwapBuffers(window->glfw_window);
   }
 }
